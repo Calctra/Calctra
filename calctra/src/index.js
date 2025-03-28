@@ -50,9 +50,4 @@ if (process.env.NODE_ENV !== 'test') {
   });
 }
 
-module.exports = app;
-
-// Main entry point for the Calctra application
-// This imports and starts the express server
-
-require('./server'); 
+module.exports = app; 

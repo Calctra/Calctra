@@ -70,9 +70,6 @@ const Footer = () => {
               Resources
             </Typography>
             <Link href="#" className={classes.link}>
-              Documentation
-            </Link>
-            <Link href="#" className={classes.link}>
               API Reference
             </Link>
             <Link href="#" className={classes.link}>
@@ -85,9 +82,6 @@ const Footer = () => {
             </Typography>
             <Link href="#" className={classes.link}>
               GitHub
-            </Link>
-            <Link href="#" className={classes.link}>
-              Discord
             </Link>
             <Link href="#" className={classes.link}>
               Twitter

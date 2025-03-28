@@ -1,55 +1,96 @@
+const fs = require('fs');
+const path = require('path');
 const winston = require('winston');
-const { format } = winston;
+require('winston-daily-rotate-file');
 
-// Define log format
-const logFormat = format.printf(({ level, message, timestamp, ...meta }) => {
-  return `${timestamp} [${level.toUpperCase()}]: ${message} ${
-    Object.keys(meta).length ? JSON.stringify(meta) : ''
-  }`;
-});
-
-// Create logger instance
-const logger = winston.createLogger({
-  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
-  format: format.combine(
-    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    format.errors({ stack: true }),
-    format.splat(),
-    format.json()
-  ),
-  defaultMeta: { service: 'calctra-api' },
-  transports: [
-    // Write all logs with level 'error' and below to 'error.log'
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    // Write all logs with level 'info' and below to 'combined.log'
-    new winston.transports.File({ filename: 'logs/combined.log' }),
-  ],
-  exceptionHandlers: [
-    new winston.transports.File({ filename: 'logs/exceptions.log' }),
-  ],
-  rejectionHandlers: [
-    new winston.transports.File({ filename: 'logs/rejections.log' }),
-  ],
-});
-
-// If we're not in production, also log to the console
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(
-    new winston.transports.Console({
-      format: format.combine(
-        format.colorize(),
-        format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        logFormat
-      ),
-    })
-  );
+// Create logs directory if it doesn't exist
+const logDir = 'logs';
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
 }
 
-// Create a stream object for Morgan middleware
-logger.stream = {
-  write: (message) => {
-    logger.info(message.trim());
-  },
-};
+// Define log format
+const logFormat = winston.format.combine(
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+  winston.format.errors({ stack: true }),
+  winston.format.splat(),
+  winston.format.json()
+);
 
-module.exports = logger; 
+// Create a logger with console and file transports
+const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: logFormat,
+  defaultMeta: { service: 'calctra-api' },
+  transports: [
+    // Console transport
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.printf(
+          info => `${info.timestamp} ${info.level}: ${info.message}${info.stack ? '\n' + info.stack : ''}`
+        )
+      )
+    }),
+    
+    // File transport for all logs
+    new winston.transports.DailyRotateFile({
+      filename: path.join(logDir, 'calctra-%DATE%.log'),
+      datePattern: 'YYYY-MM-DD',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '14d'
+    }),
+    
+    // File transport for error logs
+    new winston.transports.DailyRotateFile({
+      filename: path.join(logDir, 'calctra-error-%DATE%.log'),
+      datePattern: 'YYYY-MM-DD',
+      level: 'error',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '30d'
+    })
+  ],
+  exceptionHandlers: [
+    new winston.transports.DailyRotateFile({
+      filename: path.join(logDir, 'exceptions.log'),
+      datePattern: 'YYYY-MM-DD',
+      zippedArchive: true,
+      maxFiles: '30d'
+    })
+  ],
+  rejectionHandlers: [
+    new winston.transports.DailyRotateFile({
+      filename: path.join(logDir, 'rejections.log'),
+      datePattern: 'YYYY-MM-DD',
+      zippedArchive: true,
+      maxFiles: '30d'
+    })
+  ]
+});
+
+// Don't exit on uncaught exceptions
+logger.exitOnError = false;
+
+// Simplified logging methods
+module.exports = {
+  error: (message, meta = {}) => {
+    logger.error(message, meta);
+  },
+  warn: (message, meta = {}) => {
+    logger.warn(message, meta);
+  },
+  info: (message, meta = {}) => {
+    logger.info(message, meta);
+  },
+  debug: (message, meta = {}) => {
+    logger.debug(message, meta);
+  },
+  // Stream for Morgan HTTP request logger
+  stream: {
+    write: (message) => {
+      logger.info(message.trim());
+    }
+  }
+}; 

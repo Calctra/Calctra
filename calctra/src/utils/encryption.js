@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const util = require('util');
 const logger = require('./logger');
@@ -16,26 +16,25 @@ const password = {
   hash: async (password, saltRounds = 12) => {
     try {
       const salt = await bcrypt.genSalt(saltRounds);
-      const hash = await bcrypt.hash(password, salt);
-      return hash;
+      return await bcrypt.hash(password, salt);
     } catch (error) {
-      console.error('Error hashing password:', error);
-      throw new Error('Password hashing failed');
+      logger.error('Password hashing error', { error: error.message });
+      throw new Error('Error hashing password');
     }
   },
 
   /**
    * Verify a password against a hash
-   * @param {string} password - Plain text password to verify
-   * @param {string} hash - Stored hash to compare against
-   * @returns {Promise<boolean>} Whether password matches the hash
+   * @param {string} password - Plain text password
+   * @param {string} hash - Hashed password
+   * @returns {Promise<boolean>} Whether password matches hash
    */
   verify: async (password, hash) => {
     try {
       return await bcrypt.compare(password, hash);
     } catch (error) {
-      console.error('Error verifying password:', error);
-      throw new Error('Password verification failed');
+      logger.error('Password verification error', { error: error.message });
+      throw new Error('Error verifying password');
     }
   }
 };
@@ -241,6 +240,16 @@ const hash = {
    */
   fileChecksum: (data) => {
     return crypto.createHash('sha256').update(data).digest('hex');
+  },
+
+  /**
+   * Generate a random token
+   * @param {number} bytes - Number of bytes (default: 32)
+   * @returns {string} Hex string of random bytes
+   */
+  random: {
+    hex: (bytes = 32) => crypto.randomBytes(bytes).toString('hex'),
+    base64: (bytes = 32) => crypto.randomBytes(bytes).toString('base64')
   }
 };
 
@@ -276,6 +285,117 @@ const random = {
   }
 };
 
+/**
+ * Homomorphic encryption utilities (placeholder for actual implementation)
+ * In a real implementation, this would use a library like node-seal
+ */
+const homomorphic = {
+  /**
+   * Initialize homomorphic encryption context (would use SEAL in production)
+   * @returns {Object} Homomorphic encryption context
+   */
+  initializeContext: () => {
+    try {
+      // In a real implementation, this would initialize the SEAL library
+      // and set up the encryption parameters
+      logger.info('Initializing homomorphic encryption context');
+      return {
+        initialized: true,
+        timestamp: new Date()
+      };
+    } catch (error) {
+      logger.error('Error initializing homomorphic encryption', { error: error.message });
+      throw new Error('Failed to initialize homomorphic encryption');
+    }
+  },
+  
+  /**
+   * Generate key pair for homomorphic encryption
+   * @returns {Object} Object containing public and private keys
+   */
+  generateKeyPair: () => {
+    try {
+      // This is a placeholder. In production code, would generate actual HE keys
+      logger.info('Generating homomorphic encryption key pair');
+      return {
+        publicKey: hash.random.hex(64),
+        privateKey: hash.random.hex(64)
+      };
+    } catch (error) {
+      logger.error('Error generating homomorphic key pair', { error: error.message });
+      throw new Error('Failed to generate homomorphic encryption keys');
+    }
+  },
+  
+  /**
+   * Encrypt data using homomorphic encryption
+   * @param {Object} data - Data to encrypt
+   * @param {string} publicKey - Public key for encryption
+   * @returns {Object} Encrypted data
+   */
+  encrypt: (data, publicKey) => {
+    try {
+      // This is a placeholder. In production, this would perform actual HE
+      logger.info('Encrypting data with homomorphic encryption');
+      return {
+        encrypted: true,
+        data: `encrypted_${JSON.stringify(data)}`,
+        publicKey
+      };
+    } catch (error) {
+      logger.error('Error in homomorphic encryption', { error: error.message });
+      throw new Error('Failed to encrypt data homomorphically');
+    }
+  },
+  
+  /**
+   * Decrypt homomorphically encrypted data
+   * @param {Object} encryptedData - Encrypted data
+   * @param {string} privateKey - Private key for decryption
+   * @returns {Object} Decrypted data
+   */
+  decrypt: (encryptedData, privateKey) => {
+    try {
+      // This is a placeholder. In production, this would perform actual HE decryption
+      logger.info('Decrypting homomorphically encrypted data');
+      
+      if (!encryptedData.encrypted) {
+        throw new Error('Data is not encrypted');
+      }
+      
+      // Extract original data from our placeholder format
+      const dataStr = encryptedData.data.replace('encrypted_', '');
+      return JSON.parse(dataStr);
+    } catch (error) {
+      logger.error('Error in homomorphic decryption', { error: error.message });
+      throw new Error('Failed to decrypt homomorphically encrypted data');
+    }
+  },
+  
+  /**
+   * Perform computation on homomorphically encrypted data
+   * @param {Object} encryptedData - Encrypted data
+   * @param {string} operation - Operation to perform
+   * @param {Object} params - Additional parameters for the operation
+   * @returns {Object} Result of the computation (still encrypted)
+   */
+  compute: (encryptedData, operation, params = {}) => {
+    try {
+      // This is a placeholder. In production, this would perform actual HE computation
+      logger.info(`Performing ${operation} on encrypted data`);
+      return {
+        encrypted: true,
+        data: `computed_${operation}_${encryptedData.data}`,
+        operation,
+        params
+      };
+    } catch (error) {
+      logger.error('Error in homomorphic computation', { error: error.message });
+      throw new Error(`Failed to perform ${operation} on encrypted data`);
+    }
+  }
+};
+
 // Generate a key if one doesn't exist (for development only)
 if (!process.env.ENCRYPTION_KEY && process.env.NODE_ENV !== 'production') {
   process.env.ENCRYPTION_KEY = crypto.randomBytes(32).toString('hex');
@@ -287,5 +407,6 @@ module.exports = {
   symmetric,
   asymmetric,
   hash,
-  random
+  random,
+  homomorphic
 }; 

@@ -1,110 +1,95 @@
-# Calctra Technical Architecture Overview
+# Calctra Technical Overview
 
-## Introduction
+## Architecture Overview
 
-Calctra is a decentralized scientific computing ecosystem leveraging blockchain technology, artificial intelligence, and homomorphic encryption. Our goal is to solve the current inequalities and inefficiencies in scientific computing resource allocation by creating an efficient, fair, and secure computational resource marketplace.
+Calctra is a decentralized platform that utilizes blockchain technology to create a marketplace for scientific computing resources. The platform connects resource providers with users who need computational power, using smart contracts to manage transactions securely and efficiently.
 
-## Core Technology Components
+### Core Components
 
-### 1. Blockchain Technology
+1. **Backend API Service (Node.js)**
+   - RESTful API for client interactions
+   - User management and authentication
+   - Resource management and matching
+   - Job scheduling and monitoring
+   - Data encryption and security
 
-Calctra uses the Solana blockchain as its underlying distributed ledger technology, with the following key advantages:
+2. **Blockchain Integration (Solana)**
+   - Smart contracts for resource matching
+   - Token-based payment system
+   - Decentralized identity verification
+   - Transaction verification and history
 
-- **High Throughput**: Processing thousands of transactions per second, meeting the real-time demands of scientific computing resource trading
-- **Low Transaction Fees**: Compared to platforms like Ethereum, Solana's transaction fees are lower, suitable for microtransactions and fine-grained resource payments
-- **Programmability**: Support for developing smart contracts to implement complex resource trading and benefit distribution logic
-- **Ecosystem Maturity**: Comprehensive development tools and ecosystem
+3. **Data Layer (MongoDB)**
+   - User profiles and preferences
+   - Resource specifications and availability
+   - Job history and status
+   - Payment records and analytics
 
-Main blockchain components include:
+4. **Security Layer**
+   - Homomorphic encryption for data privacy
+   - JWT-based authentication
+   - Role-based access control
+   - Secure data sharing protocols
 
-- **CAL Token**: Ecosystem's value medium, used for resource transactions and incentives
-- **Smart Contracts**: Including resource trading, task matching, benefit distribution, and other core functions
+## System Workflow
 
-### 2. Resource Matching Engine
+1. **Resource Registration**
+   - Providers register their computing resources
+   - Resources are verified and added to the resource pool
+   - Smart contracts are created to manage availability
 
-Our resource matching engine is Calctra's core algorithmic component, responsible for intelligently allocating computing tasks to the most suitable resource providers. Key features:
+2. **Job Submission**
+   - Users submit computational jobs with requirements
+   - Data is encrypted using homomorphic encryption
+   - Budget and timeline are specified
 
-- **Multi-dimensional Scoring**: Considering factors such as CPU, memory, storage, GPU, cost, reliability, etc.
-- **Budget Optimization**: Achieving optimal resource configuration within user budget
-- **Real-time Adjustment**: Dynamically adjusting matching strategies based on resource availability and load
-- **Fair Distribution**: Ensuring reasonable participation opportunities for all types of resource providers
+3. **Resource Matching**
+   - The matching engine finds optimal resources
+   - Pricing is calculated based on market dynamics
+   - Smart contracts are prepared for execution
 
-### 3. Privacy Computing Framework
+4. **Job Execution**
+   - Resources are allocated to the job
+   - Computation is performed on encrypted data
+   - Progress is monitored and reported
 
-Calctra's privacy computing framework is based on homomorphic encryption technology, allowing data computation in encrypted state to protect data privacy:
+5. **Result Delivery and Payment**
+   - Results are delivered securely to the user
+   - Tokens are transferred from user to provider
+   - Transaction is recorded on the blockchain
 
-- **Homomorphic Encryption**: Allows computation on data without decryption
-- **Zero-Knowledge Proofs**: Verifies the correctness of computation results without exposing original data
-- **Secure Multi-party Computation**: Allows multiple parties to collaboratively compute while protecting privacy
+## Technical Stack
 
-### 4. Data Management System
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
+- **Blockchain**: Solana, SPL Tokens
+- **Security**: Homomorphic encryption, JWT
+- **API Documentation**: Swagger/OpenAPI
+- **Testing**: Jest, Supertest
+- **Deployment**: Docker, Kubernetes
 
-Our data management system provides secure and efficient scientific data storage and sharing mechanisms:
+## Security Considerations
 
-- **Distributed Storage**: Efficient storage and retrieval of large scientific datasets
-- **Fine-grained Permission Control**: Precise control of data access and usage permissions
-- **Data Tracking**: Recording data usage and contribution
-- **Incentive Mechanism**: Rewarding the sharing and use of valuable data
+- All sensitive data is encrypted at rest and in transit
+- Homomorphic encryption allows computation on encrypted data
+- Smart contracts are audited for security vulnerabilities
+- Multi-factor authentication for user accounts
+- Regular security assessments and penetration testing
 
-## Technical Architecture
+## Performance Optimization
 
-### Backend Architecture
+- Efficient resource matching algorithms
+- Caching strategies for frequent queries
+- Horizontal scaling for API services
+- Optimized database queries and indexing
+- Load balancing for high availability
 
-- **Web Service Layer**: RESTful API based on Express.js
-- **Business Logic Layer**: Core algorithms and business rules
-- **Data Access Layer**: MongoDB database access
-- **Blockchain Integration Layer**: Interaction with Solana blockchain
+## Future Enhancements
 
-### Data Models
+- Integration with additional blockchain networks
+- Enhanced machine learning for resource matching
+- Mobile application for monitoring jobs
+- Specialized resource categories for specific scientific domains
+- Reputation system for resource providers and users
 
-Main data entities include:
-
-- **Users**: System users, including compute resource consumers and providers
-- **Resources**: Detailed information and availability of computing resources
-- **Tasks**: Requirements, status, and results of computing tasks
-- **Data**: Scientific datasets and their sharing permissions
-
-### API Design
-
-The API follows RESTful design principles, with main endpoints including:
-
-- **/api/auth**: User authentication and authorization
-- **/api/users**: User management
-- **/api/resources**: Computing resource management
-- **/api/compute**: Compute task processing
-- **/api/tokens**: Token transactions and balance queries
-- **/api/data**: Data management and sharing
-
-## Security Strategy
-
-Calctra implements a comprehensive security strategy, including:
-
-- **Transport Security**: TLS encryption for all API communications
-- **Authentication & Authorization**: JWT tokens and multi-factor authentication
-- **Data Encryption**: Encrypted storage of sensitive data
-- **Privacy Protection**: Homomorphic encryption and zero-knowledge proofs
-- **Blockchain Security**: Secure key management and transaction signing
-
-## Future Technology Roadmap
-
-### Short-term (6 months)
-
-- Improve resource matching algorithms
-- Enhance homomorphic encryption performance
-- Expand blockchain interaction capabilities
-
-### Medium-term (1 year)
-
-- Implement cross-chain resource integration
-- Develop advanced data sharing mechanisms
-- Introduce federated learning functionality
-
-### Long-term (2+ years)
-
-- Fully decentralized resource scheduling
-- Establish computational reputation system
-- Integration with other scientific computing platforms
-
-## Conclusion
-
-Calctra innovatively combines blockchain technology, artificial intelligence, and homomorphic encryption to create a secure, efficient, and fair decentralized scientific computing ecosystem. Our technical architecture design fully considers scalability, security, and user experience, providing better computing resource access solutions for researchers worldwide. 
+This document provides a high-level overview of the Calctra platform architecture and will be updated as the system evolves. 

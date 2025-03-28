@@ -6,7 +6,7 @@
 
 ## A Decentralized Revolutionary Platform Reshaping the Scientific Computing Ecosystem
 
-Calctra is dedicated to fundamentally restructuring the acquisition, utilization, and value distribution of scientific computing resources through blockchain technology, artificial intelligence, and innovative economics. Our vision is to create a decentralized, efficient, and fair scientific computing ecosystem, providing unprecedented access to computing resources for researchers worldwide.
+Calctra is a decentralized scientific computing platform that restructures the scientific computing resource market through blockchain technology and artificial intelligence. We provide a secure, efficient, and fair ecosystem where computing resource providers and consumers can exchange resources in an optimal way.
 
 ## Project Overview
 
@@ -16,10 +16,21 @@ Calctra solves these problems by creating a decentralized marketplace where reso
 
 ## Core Functions
 
-- **Decentralized Resource Pool**: Integrating globally dispersed computing resources, enabling dynamic and elastic resource scheduling
-- **Intelligent Resource Matching Engine**: AI-driven resource allocation algorithm, offering real-time, dynamic resource optimization
-- **Privacy Computing Framework**: Based on homomorphic encryption technology, ensuring the security and privacy of data usage
-- **CAL Token Ecosystem**: Innovative economic model, incentivizing resource sharing and value distribution
+### 1. Decentralized Resource Pool
+
+Our platform aggregates idle computing resources from around the world, creating a diverse and extensive decentralized computing resource pool. From personal computers to data centers, all can participate in this ecosystem and receive fair compensation.
+
+### 2. Intelligent Resource Matching Engine
+
+Through advanced algorithms and machine learning technology, our resource matching engine can intelligently allocate computing tasks to the most suitable resources based on task requirements, resource capabilities, and cost considerations, achieving optimal resource utilization.
+
+### 3. Privacy Computing Framework
+
+Using homomorphic encryption technology, Calctra enables computation on encrypted data, protecting the privacy and security of scientific data while maintaining computational capabilities. This is particularly important for research fields involving sensitive data.
+
+### 4. CAL Token Ecosystem
+
+The CAL token serves as the value medium in our ecosystem, used for resource payment, community governance, and incentive distribution. Our economic model ensures stable token value and sustainable ecosystem development.
 
 ## Technology Architecture
 
