@@ -1,0 +1,48 @@
+{
+  "name": "calctra",
+  "version": "0.1.0",
+  "description": "A decentralized scientific computing ecosystem powered by blockchain",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "blockchain",
+    "scientific-computing",
+    "decentralized",
+    "homomorphic-encryption",
+    "resource-matching",
+    "solana"
+  ],
+  "author": "Calctra Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "@solana/web3.js": "^1.78.0",
+    "@solana/spl-token": "^0.3.8",
+    "@project-serum/anchor": "^0.26.0",
+    "mongoose": "^7.5.0",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "jsonwebtoken": "^9.0.1",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.2",
+    "winston": "^3.10.0",
+    "crypto": "^1.0.1",
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "jest": "^29.6.4",
+    "nodemon": "^3.0.1",
+    "eslint": "^8.47.0",
+    "supertest": "^6.3.3"
+  }
+} 

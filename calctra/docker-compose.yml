@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: calctra-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/calctra
+      - REDIS_URI=redis://redis:6379
+      - JWT_SECRET=local_development_secret
+      - JWT_EXPIRES_IN=86400
+      - SOLANA_NETWORK=devnet
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - ./.env:/app/.env
+    networks:
+      - calctra-network
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: calctra-web
+    restart: unless-stopped
+    ports:
+      - "3001:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3000
+    depends_on:
+      - api
+    networks:
+      - calctra-network
+
+  mongo:
+    image: mongo:5.0
+    container_name: calctra-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - calctra-network
+
+  redis:
+    image: redis:6-alpine
+    container_name: calctra-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - calctra-network
+
+  # Optional: MongoDB admin UI
+  mongo-express:
+    image: mongo-express
+    container_name: calctra-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
+    depends_on:
+      - mongo
+    networks:
+      - calctra-network
+
+volumes:
+  mongo-data:
+  redis-data:
+
+networks:
+  calctra-network:
+    driver: bridge 
