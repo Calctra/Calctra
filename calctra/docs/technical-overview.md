@@ -92,4 +92,29 @@ Calctra is a decentralized platform that utilizes blockchain technology to creat
 - Specialized resource categories for specific scientific domains
 - Reputation system for resource providers and users
 
+## Development Roadmap
+
+1. **Q2 2023**: Core platform architecture and blockchain integration
+2. **Q3 2023**: Resource matching engine and homomorphic encryption implementation
+3. **Q4 2023**: Beta testing with select scientific partners
+4. **Q1 2024**: Public launch and token distribution
+5. **Q2 2024**: Expansion to additional scientific computing domains
+
+## API Structure
+
+The Calctra API is organized around REST principles. It uses standard HTTP response codes, authentication, and accepts JSON request bodies.
+
+### Main API Endpoints
+
+- `/api/auth`: User authentication and authorization
+- `/api/users`: User profile management
+- `/api/resources`: Computing resource management
+- `/api/jobs`: Computational job management
+- `/api/data`: Encrypted data storage and sharing
+- `/api/tokens`: CAL token transactions and history
+
+## Contribution Guidelines
+
+We welcome contributions from developers, scientists, and blockchain enthusiasts. Please refer to our GitHub repository for detailed contribution guidelines, code standards, and development workflow.
+
 This document provides a high-level overview of the Calctra platform architecture and will be updated as the system evolves. 
